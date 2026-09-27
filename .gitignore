@@ -1,5 +1,6 @@
 **/Debug
 **/Release
+**/Release_x86
 **/.vs
 **/*.opendb
 **/*.aps
@@ -7,3 +8,7 @@
 **/*.db
 audio/*.bak
 vis_milk2/*.bak
+vcpkg_installed/
+BeatDrop/BeatDrop_x86.exe
+BeatDrop/BeatDrop Resources/dlls/
+BeatDrop/BeatDrop Resources/shadercache/

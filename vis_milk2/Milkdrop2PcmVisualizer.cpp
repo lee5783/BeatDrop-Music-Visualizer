@@ -1270,7 +1270,7 @@ unsigned __stdcall DoShaderPrecache(void* param) {
         auto start = std::chrono::high_resolution_clock::now();
 
         // Set UTF-8 locale for the output stream
-        compiledList.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+        compiledList.imbue(std::locale(std::locale::classic(), new std::codecvt_utf8<wchar_t>));
 
         while (std::getline(file, line)) {
             if (shaderPrecacheCancel.load())
@@ -1446,8 +1446,12 @@ int StartThreads(HINSTANCE instance) {
     // parse command line
     CPrefs prefs(argc, argv, hr);
     if (FAILED(hr)) {
-        ERR(L"CPrefs::CPrefs constructor failed: hr = 0x%08x", hr);
-        return -__LINE__;
+        ERR(L"CPrefs::CPrefs constructor failed: hr = 0x%08x; continuing without audio capture", hr);
+        StartShaderPrecacheThread(instance);
+        StartRenderThread(instance);
+        WaitForSingleObject(thread, INFINITE);
+        StopShaderPrecacheThread();
+        return 0;
     }
     if (S_FALSE == hr) {
         // nothing to do
